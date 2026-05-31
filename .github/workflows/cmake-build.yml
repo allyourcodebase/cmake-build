@@ -18,7 +18,7 @@ jobs:
           - aarch64-linux-musl
           - riscv64-linux-musl
           - aarch64-macos
-          # - x86_64-windows-gnu
+          - x86_64-windows-gnu
 
     steps:
       - name: Checkout
@@ -27,9 +27,8 @@ jobs:
         uses: mlugg/setup-zig@v2
 
       - name: Building cmake
-        run: zig build -Dfull -Dtarget=${{ matrix.target }} -Doptimize=ReleaseFast
+        run: zig build -Dfull -Dtarget=${{ matrix.target }} -Doptimize=ReleaseFast --summary all
       - name: Smoke test
-        if: matrix.target == 'x86_64-linux-musl'
         run: |
           ./zig-out/bin/cmake --version
           ./zig-out/bin/cmake -E echo "cmake works"

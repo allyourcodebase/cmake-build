@@ -26,6 +26,7 @@ There are two flavors, selected by `-Dfull`:
 zig build -Dfull -Dtarget=x86_64-linux-musl     # Linux (static, host-runnable)
 zig build -Dfull -Dtarget=aarch64-macos         # macOS (frameworkless)
 zig build -Dfull -Dtarget=x86_64-windows-gnu    # Windows (mingw)
+# and others, run 'zig targets' to check all available targets
 ```
 
 Optional flags: `-Doptimize=ReleaseFast|ReleaseSmall|ReleaseSafe|Debug` (default `Debug`).
