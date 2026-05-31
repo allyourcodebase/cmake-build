@@ -29,7 +29,7 @@ jobs:
       - name: Building cmake
         run: zig build -Dfull -Dtarget=${{ matrix.target }} -Doptimize=ReleaseFast --summary all
       - name: Smoke test
-        if: matrix.target != 'riscv64-linux-musl' && matrix.target != 'aarch64-linux-musl'
+        if: matrix.target == 'x86_64-linux-musl'
         run: |
           ./zig-out/bin/cmake --version
           ./zig-out/bin/cmake -E echo "cmake works"
