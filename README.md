@@ -82,3 +82,12 @@ make -C build
 See the comments in `build.zig` for the per-OS specifics (config-header values,
 the macOS frameworkless CoreFoundation stubs, the Windows winsock/mingw fixes,
 etc.).
+
+## License
+
+- This build glue (`build.zig`, `build.zig.zon`, this README) — [MIT](LICENSE)
+- The CMake source it builds — BSD-3-Clause, © Kitware, Inc. and Contributors,
+  retained as [`LICENSE.cmake`](LICENSE.cmake).
+
+BSD-3-Clause is permissive and compatible with MIT; the only requirement is
+preserving CMake's copyright notice, which `LICENSE.cmake` does.
