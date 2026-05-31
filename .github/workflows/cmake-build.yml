@@ -1,0 +1,50 @@
+name: cmake-build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: full cmake (${{ matrix.target }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - x86_64-linux-musl
+          - aarch64-linux-musl
+          - riscv64-linux-musl
+          - aarch64-macos
+          # - x86_64-windows-gnu
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+      - name: Setup Zig
+        uses: mlugg/setup-zig@v2
+
+      - name: Building cmake
+        run: zig build -Dfull -Dtarget=${{ matrix.target }} -Doptimize=ReleaseFast
+      - name: Smoke test
+        if: matrix.target == 'x86_64-linux-musl'
+        run: |
+          ./zig-out/bin/cmake --version
+          ./zig-out/bin/cmake -E echo "cmake works"
+          mkdir -p t/src t/build
+          printf 'cmake_minimum_required(VERSION 3.10)\nproject(hello C)\nadd_executable(hello main.c)\n' > t/src/CMakeLists.txt
+          printf '#include <stdio.h>\nint main(void){puts("ok");return 0;}\n' > t/src/main.c
+          ./zig-out/bin/cmake -S t/src -B t/build
+          make -C t/build
+          ./t/build/hello
+
+      # - name: Upload artifact
+      #   uses: actions/upload-artifact@main
+      #   with:
+      #     name: cmake-${{ matrix.target }}
+      #     path: |
+      #       zig-out/bin/cmake
+      #       zig-out/bin/cmake.exe
+      #     if-no-files-found: ignore
